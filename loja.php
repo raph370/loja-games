@@ -115,7 +115,11 @@ $tem_promo = mysqli_query($conn, "SELECT id FROM jogos WHERE em_promocao=1 LIMIT
         $preco_final = $tem_promo_j ? $j['preco_promo'] : $j['preco'];
         $desconto = $tem_promo_j ? round((1 - $j['preco_promo']/$j['preco'])*100) : 0;
         $cat = strtolower(iconv('UTF-8','ASCII//TRANSLIT',$j['categoria']));
-        $img = $j['imagem']
+         $img = $j['imagem']
+    ? (str_starts_with($j['imagem'], 'http') 
+        ? '<img src="'.$j['imagem'].'" alt="'.$j['nome'].'">'
+        : '<img src="imagens/'.$j['imagem'].'" alt="'.$j['nome'].'">')
+    : '<div class="card-sem-img">🎮</div>';
             ? '<img src="imagens/'.$j['imagem'].'" alt="'.$j['nome'].'">'
             : '<div class="card-sem-img">🎮</div>';
         $badge = $tem_promo_j ? '<span class="badge-promo-card">-'.$desconto.'%</span>' : '';
