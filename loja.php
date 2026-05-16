@@ -127,7 +127,7 @@ $tem_promo = mysqli_query($conn, "SELECT id FROM jogos WHERE em_promocao=1 LIMIT
             ? '<span class="preco-antigo">R$ '.number_format($j['preco'],2,",",".").'</span><span class="preco-atual">R$ '.number_format($j['preco_promo'],2,",",".").'</span><span class="badge-off">-'.$desconto.'%</span>'
             : '<span class="preco-atual">R$ '.number_format($j['preco'],2,",",".").'</span>';
         echo '
-        <div class="card" data-nome="'.strtolower($j['nome']).'" data-cat="'.$cat.'" data-promo="'.($j['em_promocao']?'promo':'').'">
+        <div class="card" onclick="window.location.href=\'jogo.php?id='.$j['id'].'\'" data-nome="'.strtolower($j['nome']).'" data-cat="'.$cat.'" data-promo="'.($j['em_promocao']?'promo':'').'">
             '.$badge.$img.'
             <div class="card-body">
                 <div class="card-cat">'.$j['categoria'].'</div>
@@ -135,7 +135,7 @@ $tem_promo = mysqli_query($conn, "SELECT id FROM jogos WHERE em_promocao=1 LIMIT
                 <div class="card-preco">'.$preco_html.'</div>
                 <div class="card-bottom">
                     <span class="'.($esgotado?'estoque-no':'estoque-ok').'">'.($esgotado?'❌ Esgotado':'✅ '.$j['estoque'].' und.').'</span>
-                    <button class="btn-comprar" '.($esgotado?'disabled':'onclick="comprar('.$j['id'].')"').'>
+                    <button class="btn-comprar" '.($esgotado?'disabled':'onclick="event.stopPropagation();comprar('.$j['id'].')"').'>
                         '.($esgotado?'Esgotado':'+ Carrinho').'
                     </button>
                 </div>
