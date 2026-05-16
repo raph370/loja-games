@@ -115,18 +115,16 @@ $tem_promo = mysqli_query($conn, "SELECT id FROM jogos WHERE em_promocao=1 LIMIT
         $preco_final = $tem_promo_j ? $j['preco_promo'] : $j['preco'];
         $desconto = $tem_promo_j ? round((1 - $j['preco_promo']/$j['preco'])*100) : 0;
         $cat = strtolower(iconv('UTF-8','ASCII//TRANSLIT',$j['categoria']));
-         $img = $j['imagem']
-    ? (str_starts_with($j['imagem'], 'http') 
-        ? '<img src="'.$j['imagem'].'" alt="'.$j['nome'].'">'
-        : '<img src="imagens/'.$j['imagem'].'" alt="'.$j['nome'].'">')
-    : '<div class="card-sem-img">🎮</div>';
-            ? '<img src="imagens/'.$j['imagem'].'" alt="'.$j['nome'].'">'
-            : '<div class="card-sem-img">🎮</div>';
+        if ($j['imagem'] && strpos($j['imagem'], 'http') === 0) {
+            $img = '<img src="'.$j['imagem'].'" alt="'.htmlspecialchars($j['nome']).'">';
+        } elseif ($j['imagem']) {
+            $img = '<img src="imagens/'.$j['imagem'].'" alt="'.htmlspecialchars($j['nome']).'">';
+        } else {
+            $img = '<div class="card-sem-img">🎮</div>';
+        }
         $badge = $tem_promo_j ? '<span class="badge-promo-card">-'.$desconto.'%</span>' : '';
         $preco_html = $tem_promo_j
-            ? '<span class="preco-antigo">R$ '.number_format($j['preco'],2,",",".").'</span>
-               <span class="preco-atual">R$ '.number_format($j['preco_promo'],2,",",".").'</span>
-               <span class="badge-off">-'.$desconto.'%</span>'
+            ? '<span class="preco-antigo">R$ '.number_format($j['preco'],2,",",".").'</span><span class="preco-atual">R$ '.number_format($j['preco_promo'],2,",",".").'</span><span class="badge-off">-'.$desconto.'%</span>'
             : '<span class="preco-atual">R$ '.number_format($j['preco'],2,",",".").'</span>';
         echo '
         <div class="card" data-nome="'.strtolower($j['nome']).'" data-cat="'.$cat.'" data-promo="'.($j['em_promocao']?'promo':'').'">
@@ -147,9 +145,7 @@ $tem_promo = mysqli_query($conn, "SELECT id FROM jogos WHERE em_promocao=1 LIMIT
     ?>
     </div>
 </div>
-
 <footer>© 2026 <span>GameStore</span> — Todos os direitos reservados</footer>
-
 <script>
 function comprar(id) {
     <?php if(isset($_SESSION['usuario_id'])): ?>
