@@ -1,53 +1,98 @@
-<?php include 'conexao.php'; ?>
+<?php
+include 'conexao.php';
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Loja de Games</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — GameStore</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: Arial; background:#0f0f1a; color:#fff; }
-        header { background:#1a1a2e; padding:20px; text-align:center; }
-        header h1 { color:#e94560; font-size:2em; }
-        nav { text-align:center; padding:15px; background:#1a1a2e; }
-        nav a { color:#e94560; margin:0 15px; text-decoration:none; font-weight:bold; }
-        .jogos { display:flex; flex-wrap:wrap; gap:20px; padding:30px; justify-content:center; }
-        .card { background:#16213e; border-radius:10px; padding:20px; width:250px; }
-        .card img { width:100%; border-radius:8px; margin-bottom:10px; height:180px; object-fit:cover; }
-        .card h3 { color:#e94560; margin-bottom:10px; }
-        .card p { color:#aaa; font-size:0.9em; margin-bottom:8px; }
-        .preco { color:#00ff88; font-size:1.2em; font-weight:bold; }
-        .btn { display:inline-block; margin-top:10px; padding:8px 16px; background:#e94560; color:#fff; border-radius:5px; text-decoration:none; }
-        .btn-del { background:#0f3460; margin-left:5px; }
+        body { font-family:'Segoe UI',Arial,sans-serif; background:#0a0a0f; color:#fff; }
+        nav { background:#111118; padding:0 30px; display:flex; align-items:center; justify-content:space-between; height:60px; border-bottom:1px solid #1e1e2e; position:sticky; top:0; z-index:100; }
+        .logo { color:#4fc3f7; font-size:1.5em; font-weight:700; letter-spacing:2px; }
+        .logo span { color:#fff; }
+        .nav-right { display:flex; align-items:center; gap:15px; }
+        .btn-nav { padding:7px 16px; border-radius:6px; text-decoration:none; font-size:0.85em; font-weight:600; }
+        .btn-loja { background:#4fc3f7; color:#0a0a0f; }
+        .btn-add { background:#00c853; color:#fff; }
+        .secao { padding:30px; }
+        .secao-titulo { font-size:1.2em; color:#aaa; margin-bottom:20px; border-left:3px solid #4fc3f7; padding-left:12px; display:flex; justify-content:space-between; align-items:center; }
+        .btn-novo { background:#00c853; color:#fff; border:none; padding:8px 18px; border-radius:8px; cursor:pointer; font-size:0.85em; font-weight:600; text-decoration:none; }
+        .jogos { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
+        .card { background:#111118; border-radius:10px; overflow:hidden; border:1px solid #1e1e2e; position:relative; }
+        .card img { width:100%; height:160px; object-fit:cover; }
+        .card-sem-img { height:160px; background:#1e1e2e; display:flex; align-items:center; justify-content:center; font-size:3em; }
+        .card-body { padding:14px; }
+        .card-cat { font-size:0.72em; color:#4fc3f7; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+        .card h3 { font-size:0.95em; font-weight:600; margin-bottom:8px; color:#fff; }
+        .preco-atual { color:#4fc3f7; font-size:1.1em; font-weight:700; }
+        .estoque-ok { color:#4caf50; font-size:0.8em; }
+        .estoque-no { color:#f44336; font-size:0.8em; }
+        .badge-promo { position:absolute; top:10px; left:10px; background:#ff6b6b; color:#fff; font-size:0.72em; padding:3px 8px; border-radius:4px; font-weight:700; }
+        .card-actions { display:flex; gap:8px; margin-top:12px; }
+        .btn-editar { flex:1; background:#0f3460; color:#fff; border:none; padding:8px; border-radius:6px; cursor:pointer; font-size:0.82em; text-decoration:none; text-align:center; }
+        .btn-deletar { flex:1; background:#e94560; color:#fff; border:none; padding:8px; border-radius:6px; cursor:pointer; font-size:0.82em; }
+        footer { background:#111118; border-top:1px solid #1e1e2e; padding:20px; text-align:center; color:#555; font-size:0.85em; margin-top:20px; }
+        footer span { color:#4fc3f7; }
     </style>
 </head>
 <body>
-<header><h1>🎮 Loja de Games</h1></header>
 <nav>
-    <a href="promocoes.php">🔥 Promoções</a>
-    <a href="index.php">Home</a>
-    <a href="adicionar.php">Adicionar Jogo</a>
+    <div class="logo">GAME<span>STORE</span> <span style="color:#e94560;font-size:0.6em;vertical-align:middle">ADMIN</span></div>
+    <div class="nav-right">
+        <a href="loja.php" class="btn-nav btn-loja">Ver Loja</a>
+        <a href="promocoes.php" class="btn-nav" style="background:#e94560;color:#fff">🔥 Promoções</a>
+        <a href="adicionar.php" class="btn-nav btn-add">+ Novo Jogo</a>
+    </div>
 </nav>
-<div class="jogos">
-<?php
-$result = mysqli_query($conn, "SELECT * FROM jogos ORDER BY criado_em DESC");
-if (mysqli_num_rows($result) == 0) {
-    echo '<p style="color:#aaa;padding:30px">Nenhum jogo cadastrado ainda.</p>';
-} else {
+
+<div class="secao">
+    <div class="secao-titulo">
+        <span>Gerenciar Jogos</span>
+        <a href="adicionar.php" class="btn-novo">+ Adicionar Jogo</a>
+    </div>
+    <div class="jogos">
+    <?php
+    $result = mysqli_query($conn, "SELECT * FROM jogos ORDER BY criado_em DESC");
     while ($j = mysqli_fetch_assoc($result)) {
-        $img = $j['imagem'] ? '<img src="imagens/'.$j['imagem'].'" alt="capa">' : '';
-        echo '<div class="card">'.$img.'
-        <h3>'.htmlspecialchars($j['nome']).'</h3>
-        <p>'.htmlspecialchars($j['descricao']).'</p>
-        <p>Categoria: '.$j['categoria'].'</p>
-        <p>Estoque: '.$j['estoque'].'</p>
-        <span class="preco">R$ '.number_format($j['preco'],2,",",".").'</span><br>
-        <a href="editar.php?id='.$j['id'].'" class="btn">Editar</a>
-        <a href="deletar.php?id='.$j['id'].'" class="btn btn-del" onclick="return confirm(\'Deletar?\')">Deletar</a>
+        if ($j['imagem'] && strpos($j['imagem'], 'http') === 0) {
+            $img = '<img src="'.$j['imagem'].'" alt="'.htmlspecialchars($j['nome']).'">';
+        } elseif ($j['imagem']) {
+            $img = '<img src="imagens/'.$j['imagem'].'" alt="'.htmlspecialchars($j['nome']).'">';
+        } else {
+            $img = '<div class="card-sem-img">🎮</div>';
+        }
+        $badge = $j['em_promocao'] ? '<span class="badge-promo">🔥 PROMO</span>' : '';
+        echo '
+        <div class="card">
+            '.$badge.$img.'
+            <div class="card-body">
+                <div class="card-cat">'.$j['categoria'].'</div>
+                <h3>'.htmlspecialchars($j['nome']).'</h3>
+                <p class="preco-atual">R$ '.number_format($j['preco'],2,",",".").'</p>
+                <p class="'.($j['estoque']>0?'estoque-ok':'estoque-no').'">Estoque: '.$j['estoque'].'</p>
+                <div class="card-actions">
+                    <a href="editar.php?id='.$j['id'].'" class="btn-editar">✏️ Editar</a>
+                    <button class="btn-deletar" onclick="deletar('.$j['id'].',\''.htmlspecialchars($j['nome']).'\')">🗑 Deletar</button>
+                </div>
+            </div>
         </div>';
     }
-}
-?>
+    ?>
+    </div>
 </div>
+
+<footer>© 2026 <span>GameStore</span> — Painel Administrativo</footer>
+
+<script>
+function deletar(id, nome) {
+    if(confirm('Deletar "' + nome + '"? Esta ação não pode ser desfeita!')) {
+        window.location.href = 'deletar.php?id=' + id;
+    }
+}
+</script>
 </body>
 </html>
