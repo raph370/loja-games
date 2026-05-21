@@ -17,10 +17,10 @@ session_start();
         .nav-right { display:flex; align-items:center; gap:15px; }
         .btn-nav { padding:7px 16px; border-radius:6px; text-decoration:none; font-size:0.85em; font-weight:600; }
         .btn-loja { background:#4fc3f7; color:#0a0a0f; }
+        .btn-promo { background:#e94560; color:#fff; }
         .btn-add { background:#00c853; color:#fff; }
         .secao { padding:30px; }
-        .secao-titulo { font-size:1.2em; color:#aaa; margin-bottom:20px; border-left:3px solid #4fc3f7; padding-left:12px; display:flex; justify-content:space-between; align-items:center; }
-        .btn-novo { background:#00c853; color:#fff; border:none; padding:8px 18px; border-radius:8px; cursor:pointer; font-size:0.85em; font-weight:600; text-decoration:none; }
+        .secao-titulo { font-size:1.2em; color:#aaa; margin-bottom:20px; border-left:3px solid #4fc3f7; padding-left:12px; }
         .jogos { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
         .card { background:#111118; border-radius:10px; overflow:hidden; border:1px solid #1e1e2e; position:relative; }
         .card img { width:100%; height:160px; object-fit:cover; }
@@ -28,7 +28,7 @@ session_start();
         .card-body { padding:14px; }
         .card-cat { font-size:0.72em; color:#4fc3f7; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
         .card h3 { font-size:0.95em; font-weight:600; margin-bottom:8px; color:#fff; }
-        .preco-atual { color:#4fc3f7; font-size:1.1em; font-weight:700; }
+        .preco-atual { color:#4fc3f7; font-size:1.1em; font-weight:700; margin-bottom:4px; }
         .estoque-ok { color:#4caf50; font-size:0.8em; }
         .estoque-no { color:#f44336; font-size:0.8em; }
         .badge-promo { position:absolute; top:10px; left:10px; background:#ff6b6b; color:#fff; font-size:0.72em; padding:3px 8px; border-radius:4px; font-weight:700; }
@@ -44,16 +44,13 @@ session_start();
     <div class="logo">GAME<span>STORE</span> <span style="color:#e94560;font-size:0.6em;vertical-align:middle">ADMIN</span></div>
     <div class="nav-right">
         <a href="loja.php" class="btn-nav btn-loja">Ver Loja</a>
-        <a href="promocoes.php" class="btn-nav" style="background:#e94560;color:#fff">🔥 Promoções</a>
+        <a href="promocoes.php" class="btn-nav btn-promo">🔥 Promoções</a>
         <a href="adicionar.php" class="btn-nav btn-add">+ Novo Jogo</a>
     </div>
 </nav>
 
 <div class="secao">
-    <div class="secao-titulo">
-        <span>Gerenciar Jogos</span>
-        <a href="adicionar.php" class="btn-novo">+ Adicionar Jogo</a>
-    </div>
+    <p class="secao-titulo">Gerenciar Jogos</p>
     <div class="jogos">
     <?php
     $result = mysqli_query($conn, "SELECT * FROM jogos ORDER BY criado_em DESC");
