@@ -72,6 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <option>Esporte</option>
                 <option>Aventura</option>
                 <option>Estratégia</option>
+                <option>Tiro</option>
+                <option>Terror</option>
+                <option>Indie</option>
+                <option>Mundo Aberto</option>
+                <option>Corrida</option>
+                <option>Luta</option>
+                <option>Plataforma</option>
+                <option>Musical</option>
             </select>
 
             <label>Estoque</label>
@@ -99,46 +107,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 async function uploadImagem(input) {
     const file = input.files[0];
     if (!file) return;
-
-    document.getElementById('progressBar').style.width = '0%';
-    document.getElementById('progress') && (document.querySelector('.progress').style.display = 'block');
     document.querySelector('.progress').style.display = 'block';
     document.getElementById('status').style.display = 'block';
     document.getElementById('status').textContent = 'Enviando imagem...';
+    document.getElementById('status').style.color = '#aaa';
     document.getElementById('btnSalvar').disabled = true;
-
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'loja_games');
-    formData.append('cloud_name', 'dqm6eceoc');
-
-    try {
-        const xhr = new XMLHttpRequest();
-        xhr.upload.onprogress = (e) => {
-            const pct = Math.round(e.loaded / e.total * 100);
-            document.getElementById('progressBar').style.width = pct + '%';
-        };
-        xhr.onload = () => {
-            const data = JSON.parse(xhr.responseText);
-            if (data.secure_url) {
-                document.getElementById('imgUrl').value = data.secure_url;
-                document.getElementById('preview').src = data.secure_url;
-                document.getElementById('preview').style.display = 'block';
-                document.getElementById('status').textContent = '✅ Imagem enviada com sucesso!';
-                document.getElementById('status').style.color = '#4caf50';
-                document.getElementById('btnSalvar').disabled = false;
-            } else {
-                document.getElementById('status').textContent = '❌ Erro ao enviar imagem!';
-                document.getElementById('status').style.color = '#f44336';
-                document.getElementById('btnSalvar').disabled = false;
-            }
-        };
-        xhr.open('POST', 'https://api.cloudinary.com/v1_1/dqm6eceoc/image/upload');
-        xhr.send(formData);
-    } catch(e) {
-        document.getElementById('status').textContent = '❌ Erro ao enviar imagem!';
-        document.getElementById('btnSalvar').disabled = false;
-    }
+    const xhr = new XMLHttpRequest();
+    xhr.upload.onprogress = (e) => {
+        document.getElementById('progressBar').style.width = Math.round(e.loaded/e.total*100) + '%';
+    };
+    xhr.onload = () => {
+        const data = JSON.parse(xhr.responseText);
+        if (data.secure_url) {
+            document.getElementById('imgUrl').value = data.secure_url;
+            document.getElementById('preview').src = data.secure_url;
+            document.getElementById('preview').style.display = 'block';
+            document.getElementById('status').textContent = '✅ Imagem enviada com sucesso!';
+            document.getElementById('status').style.color = '#4caf50';
+            document.getElementById('btnSalvar').disabled = false;
+        } else {
+            document.getElementById('status').textContent = '❌ Erro ao enviar imagem!';
+            document.getElementById('status').style.color = '#f44336';
+            document.getElementById('btnSalvar').disabled = false;
+        }
+    };
+    xhr.open('POST', 'https://api.cloudinary.com/v1_1/dqm6eceoc/image/upload');
+    xhr.send(formData);
 }
 </script>
 </body>

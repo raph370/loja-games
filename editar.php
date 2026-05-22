@@ -70,7 +70,10 @@ $jogo = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM jogos WHERE id=$id
 
             <label>Categoria</label>
             <select name="categoria">
-                <?php foreach(['Ação','RPG','Esporte','Aventura','Estratégia'] as $cat): ?>
+                <?php
+                $cats = ['Ação','RPG','Esporte','Aventura','Estratégia','Tiro','Terror','Indie','Mundo Aberto','Corrida','Luta','Plataforma','Musical'];
+                foreach($cats as $cat):
+                ?>
                 <option <?=$jogo['categoria']==$cat?'selected':''?>><?=$cat?></option>
                 <?php endforeach; ?>
             </select>
@@ -105,21 +108,17 @@ $jogo = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM jogos WHERE id=$id
 async function uploadImagem(input) {
     const file = input.files[0];
     if (!file) return;
-
     document.querySelector('.progress').style.display = 'block';
     document.getElementById('status').style.display = 'block';
     document.getElementById('status').textContent = 'Enviando imagem...';
     document.getElementById('status').style.color = '#aaa';
     document.getElementById('btnSalvar').disabled = true;
-
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'loja_games');
-
     const xhr = new XMLHttpRequest();
     xhr.upload.onprogress = (e) => {
-        const pct = Math.round(e.loaded / e.total * 100);
-        document.getElementById('progressBar').style.width = pct + '%';
+        document.getElementById('progressBar').style.width = Math.round(e.loaded/e.total*100) + '%';
     };
     xhr.onload = () => {
         const data = JSON.parse(xhr.responseText);
