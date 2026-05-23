@@ -7,6 +7,7 @@ $tem_promo = mysqli_query($conn, "SELECT id FROM jogos WHERE em_promocao=1 LIMIT
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="google-site-verification" content="0-NKprxw9MOEHow6PuRoT9fq1kHNOESznPM0zdhBVdw" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameStore</title>
     <style>
