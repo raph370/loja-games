@@ -7,36 +7,40 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="0-NKprxw9MOEHow6PuRoT9fq1kHNOESznPM0zdhBVdw" />
     <title>Admin — GameStore</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Segoe UI',Arial,sans-serif; background:#0a0a0f; color:#fff; }
-        nav { background:#111118; padding:0 30px; display:flex; align-items:center; justify-content:space-between; height:60px; border-bottom:1px solid #1e1e2e; position:sticky; top:0; z-index:100; }
-        .logo { color:#4fc3f7; font-size:1.5em; font-weight:700; letter-spacing:2px; }
+        nav { background:#111118; padding:0 30px; display:flex; align-items:center; justify-content:space-between; height:60px; border-bottom:2px solid #e94560; position:sticky; top:0; z-index:100; }
+        .logo { color:#e94560; font-size:1.5em; font-weight:700; letter-spacing:2px; }
         .logo span { color:#fff; }
         .nav-right { display:flex; align-items:center; gap:15px; }
         .btn-nav { padding:7px 16px; border-radius:6px; text-decoration:none; font-size:0.85em; font-weight:600; }
-        .btn-loja { background:#4fc3f7; color:#0a0a0f; }
+        .btn-loja { background:transparent; color:#e94560; border:1px solid #e94560; }
         .btn-promo { background:#e94560; color:#fff; }
         .btn-add { background:#00c853; color:#fff; }
         .secao { padding:30px; }
-        .secao-titulo { font-size:1.2em; color:#aaa; margin-bottom:20px; border-left:3px solid #4fc3f7; padding-left:12px; }
+        .secao-titulo { font-size:1.2em; color:#aaa; margin-bottom:20px; border-left:3px solid #e94560; padding-left:12px; }
         .jogos { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
-        .card { background:#111118; border-radius:10px; overflow:hidden; border:1px solid #1e1e2e; position:relative; }
+        .card { background:#111118; border-radius:10px; overflow:hidden; border:1px solid #1e1e2e; position:relative; transition:border 0.2s; }
+        .card:hover { border-color:#e94560; }
         .card img { width:100%; height:160px; object-fit:cover; }
         .card-sem-img { height:160px; background:#1e1e2e; display:flex; align-items:center; justify-content:center; font-size:3em; }
         .card-body { padding:14px; }
-        .card-cat { font-size:0.72em; color:#4fc3f7; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+        .card-cat { font-size:0.72em; color:#e94560; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
         .card h3 { font-size:0.95em; font-weight:600; margin-bottom:8px; color:#fff; }
-        .preco-atual { color:#4fc3f7; font-size:1.1em; font-weight:700; margin-bottom:4px; }
+        .preco-atual { color:#ff6b6b; font-size:1.1em; font-weight:700; margin-bottom:4px; }
         .estoque-ok { color:#4caf50; font-size:0.8em; }
         .estoque-no { color:#f44336; font-size:0.8em; }
-        .badge-promo { position:absolute; top:10px; left:10px; background:#ff6b6b; color:#fff; font-size:0.72em; padding:3px 8px; border-radius:4px; font-weight:700; }
+        .badge-promo { position:absolute; top:10px; left:10px; background:#e94560; color:#fff; font-size:0.72em; padding:3px 8px; border-radius:4px; font-weight:700; }
         .card-actions { display:flex; gap:8px; margin-top:12px; }
-        .btn-editar { flex:1; background:#0f3460; color:#fff; border:none; padding:8px; border-radius:6px; cursor:pointer; font-size:0.82em; text-decoration:none; text-align:center; }
-        .btn-deletar { flex:1; background:#e94560; color:#fff; border:none; padding:8px; border-radius:6px; cursor:pointer; font-size:0.82em; }
+        .btn-editar { flex:1; background:#1e1e2e; color:#fff; border:1px solid #2e2e3e; padding:8px; border-radius:6px; cursor:pointer; font-size:0.82em; text-decoration:none; text-align:center; transition:border 0.2s; }
+        .btn-editar:hover { border-color:#e94560; color:#e94560; }
+        .btn-deletar { flex:1; background:#e94560; color:#fff; border:none; padding:8px; border-radius:6px; cursor:pointer; font-size:0.82em; transition:background 0.2s; }
+        .btn-deletar:hover { background:#c73652; }
         footer { background:#111118; border-top:1px solid #1e1e2e; padding:20px; text-align:center; color:#555; font-size:0.85em; margin-top:20px; }
-        footer span { color:#4fc3f7; }
+        footer span { color:#e94560; }
     </style>
 </head>
 <body>
